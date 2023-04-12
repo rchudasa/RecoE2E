@@ -37,17 +37,19 @@ process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_38T_cff")
 process.load("Configuration.StandardSequences.Reconstruction_cff")
-process.GlobalTag.globaltag = cms.string('113X_upgrade2018_realistic_v5')
+#process.GlobalTag.globaltag = cms.string('113X_upgrade2018_realistic_v5')
+process.GlobalTag.globaltag = cms.string('120X_upgrade2018_realistic_v1')
 process.es_prefer_GlobalTag = cms.ESPrefer('PoolDBESSource','GlobalTag')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(options.maxEvents)
-    #input = cms.untracked.int32(10)
+    #input = cms.untracked.int32(options.maxEvents)
+    input = cms.untracked.int32(10000)
     )
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-      options.inputFiles
-      #"file:myOutputFile.root"#SinglePhotonPt50_noPU_AODSIM.root
+      #options.inputFiles
+      #"file:/eos/cms/store/group/phys_heavyions/rchudasa/e2e/inference/SIM_DoubleGammaPt50_Pythia8_1000Ev.root"#SinglePhotonPt50_noPU_AODSIM.root
+      "file:/eos/cms/store/group/phys_heavyions/rchudasa/e2e/DoubleGammaPt50_Pythia8/DoubleGammaPt50_AODSIM/230113_072153/0000/output.root"#SinglePhotonPt50_noPU_AODSIM.root
       )
     , skipEvents = cms.untracked.uint32(0)#options.skipEvents
     )
@@ -64,10 +66,15 @@ process.DetFrames.doBPIX2 = False
 process.DetFrames.doBPIX3 = False
 process.DetFrames.doBPIX4 = False
 process.DetFrames.doTracksAtECALadjPt = False
+process.DetFrames.doTOB = cms.bool(False)
+process.DetFrames.doTIB = cms.bool(False)
+process.DetFrames.doTEC = cms.bool(False)
+process.DetFrames.doTID = cms.bool(False)
+
 process.DetFrames.setChannelOrder = "1"
 
-process.EGTagger.EGmodelName = cms.string("tfModels/"+options.EGModelName)
-
+#process.EGTagger.EGmodelName = cms.string("tfModels/"+options.EGModelName)
+process.EGTagger.EGModelName = cms.string('tfModels/sample.onnx')
 process.out = cms.OutputModule("PoolOutputModule",
     fileName = cms.untracked.string('SinglePhotonPt50_noPU_AODSIM+EGFrames.root') 
     )
@@ -78,10 +85,36 @@ process.TFileService = cms.Service("TFileService",
 process.p = cms.Path(process.DetFrames + process.EGFrames+process.EGTagger)
 process.ep=cms.EndPath(process.out)
 
-#process.Timing = cms.Service("Timing",
-#  summaryOnly = cms.untracked.bool(False),
-#  useJobReport = cms.untracked.bool(True)
-#)
-#process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",
-#    ignoreTotal = cms.untracked.int32(1)
-#)
+'''
+process.Timing = cms.Service("Timing",
+  summaryOnly = cms.untracked.bool(True),
+  useJobReport = cms.untracked.bool(True)
+)
+process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",
+    ignoreTotal = cms.untracked.int32(1)
+)
+
+
+from HLTrigger.Timer.FastTimerService_cfi import FastTimerService as _FastTimerService
+process.FastTimerService = _FastTimerService.clone(
+  enableDQM = False,
+  printRunSummary = False,
+  printJobSummary = True,
+  writeJSONSummary = True,
+  jsonFileName = 'resources.json'
+)
+
+from HLTrigger.Timer.ThroughputService_cfi import ThroughputService as _ThroughputService
+process.ThroughputService = _ThroughputService.clone(
+  #enableDQM = False,
+  enableDQM = cms.untracked.bool(False),
+  printEventSummary = True,
+  eventRange = 10000,    # if you know how many events there are in your job, write it here
+  eventResolution = 100
+  #eventResolution = 50
+)
+
+process.MessageLogger.cerr.ThroughputService = cms.untracked.PSet(
+    limit = cms.untracked.int32(10000000)
+)
+'''

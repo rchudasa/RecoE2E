@@ -34,8 +34,9 @@ e2e::Frame2D e2e::predict_tf(e2e::Frame4D& vinputFrame, string model_filename, s
  Ort::Env env(OrtLoggingLevel::ORT_LOGGING_LEVEL_WARNING,
                  instanceName.c_str());
  std::string modelFilepath ="RecoE2E/"+model_filename;
- OrtCUDAProviderOptions cuda_options{};
- session_options.AppendExecutionProvider_CUDA(cuda_options);
+ // uncomment following 2 line to use GPU for inference 
+ //OrtCUDAProviderOptions cuda_options{};
+ //session_options.AppendExecutionProvider_CUDA(cuda_options);
  Ort::Session ort_session(env, modelFilepath.c_str(), session_options);
 
 // for (auto provider : providers) {
