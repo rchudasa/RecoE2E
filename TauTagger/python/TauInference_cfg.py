@@ -110,13 +110,13 @@ process.GlobalTag.globaltag = cms.string('113X_upgrade2018_realistic_v5')
 process.es_prefer_GlobalTag = cms.ESPrefer('PoolDBESSource','GlobalTag')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(options.maxEvents)
-    #input = cms.untracked.int32(10)
+    #input = cms.untracked.int32(options.maxEvents)
+    input = cms.untracked.int32(10)
     )
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-      options.inputFiles
-      #"file:myOutputFile.root"#SinglePhotonPt50_noPU_AODSIM.root
+      #options.inputFiles
+      "file:/eos/cms/store/group/phys_heavyions/rchudasa/e2e/GluGluHToTauTau_Hadronic_M125_13TeV_powheg_pythia8/GluGluHToTauTau_AODSIM/230101_172641/0000/SIM_GluGluHToTauTau_Pythia8_1.root"
       )
     , skipEvents = cms.untracked.uint32(0)#options.skipEvents
     )
@@ -129,6 +129,20 @@ process.load("RecoE2E.TauTagger.TauTagger_cfi")
 process.JetFrames.jetCollection = cms.string("ak8")
 process.JetFrames.minJetPt = cms.double(35.)
 process.JetFrames.maxJetEta = cms.double(2.4)
+
+process.JetFrames.doHBHEenergy = True
+process.JetFrames.doTracksAtECALstitchedPt = True
+process.JetFrames.doBPIX1 = True
+process.JetFrames.doBPIX2 = True
+process.JetFrames.doTEC = True
+process.DetFrames.doHBHEenergy = True
+process.DetFrames.doTracksAtECALstitchedPt = True
+process.DetFrames.doBPIX1 = True
+process.DetFrames.doBPIX2 = True
+process.DetFrames.doTEC = True
+process.DetFrames.setChannelOrder = cms.string("0,1,2,3,4,5,6,7")
+
+'''
 process.JetFrames.doHBHEenergy = options.doHBHEenergy
 process.JetFrames.doECALstitched = options.doECALstitched
 process.JetFrames.doTracksAtECALstitchedPt = options.doTracksAtECALstitchedPt
@@ -155,7 +169,7 @@ process.DetFrames.doTIB = options.doTIB
 process.DetFrames.doTEC = options.doTEC
 process.DetFrames.doTID = options.doTID
 process.DetFrames.setChannelOrder = options.setChannelOrder
-
+'''
 process.TauTagger.TauModelName = cms.string("tfModels/"+options.TauModelName)
 
 process.out = cms.OutputModule("PoolOutputModule",

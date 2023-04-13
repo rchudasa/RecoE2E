@@ -48,8 +48,8 @@ process.maxEvents = cms.untracked.PSet(
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
       #options.inputFiles
-      #"file:/eos/cms/store/group/phys_heavyions/rchudasa/e2e/inference/SIM_DoubleGammaPt50_Pythia8_1000Ev.root"#SinglePhotonPt50_noPU_AODSIM.root
-      "file:/eos/cms/store/group/phys_heavyions/rchudasa/e2e/DoubleGammaPt50_Pythia8/DoubleGammaPt50_AODSIM/230113_072153/0000/output.root"#SinglePhotonPt50_noPU_AODSIM.root
+     "file:/eos/cms/store/group/phys_heavyions/rchudasa/e2e/inference/SIM_DoubleGammaPt50_Pythia8_1000Ev.root"#SinglePhotonPt50_noPU_AODSIM.root
+      #"file:/eos/cms/store/group/phys_heavyions/rchudasa/e2e/DoubleGammaPt50_Pythia8/DoubleGammaPt50_AODSIM/230113_072153/0000/output.root"#SinglePhotonPt50_noPU_AODSIM.root
       )
     , skipEvents = cms.untracked.uint32(0)#options.skipEvents
     )
@@ -59,6 +59,7 @@ process.load("RecoE2E.FrameProducers.DetFrameProducer_cfi")
 process.load("RecoE2E.FrameProducers.EGFrameProducer_cfi")
 process.load("RecoE2E.EGTagger.EGTagger_cfi")
 #process.EGTagger.EGModelName = options.EGModelName
+'''
 process.DetFrames.doHBHEenergy = False
 process.DetFrames.doTracksAtECALstitchedPt = False
 process.DetFrames.doBPIX1 = False
@@ -70,7 +71,7 @@ process.DetFrames.doTOB = cms.bool(False)
 process.DetFrames.doTIB = cms.bool(False)
 process.DetFrames.doTEC = cms.bool(False)
 process.DetFrames.doTID = cms.bool(False)
-
+'''
 process.DetFrames.setChannelOrder = "1"
 
 #process.EGTagger.EGmodelName = cms.string("tfModels/"+options.EGModelName)
@@ -93,7 +94,7 @@ process.Timing = cms.Service("Timing",
 process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",
     ignoreTotal = cms.untracked.int32(1)
 )
-
+'''
 
 from HLTrigger.Timer.FastTimerService_cfi import FastTimerService as _FastTimerService
 process.FastTimerService = _FastTimerService.clone(
@@ -107,7 +108,7 @@ process.FastTimerService = _FastTimerService.clone(
 from HLTrigger.Timer.ThroughputService_cfi import ThroughputService as _ThroughputService
 process.ThroughputService = _ThroughputService.clone(
   #enableDQM = False,
-  enableDQM = cms.untracked.bool(False),
+  enableDQM = cms.untracked.bool(True),
   printEventSummary = True,
   eventRange = 10000,    # if you know how many events there are in your job, write it here
   eventResolution = 100
@@ -117,4 +118,3 @@ process.ThroughputService = _ThroughputService.clone(
 process.MessageLogger.cerr.ThroughputService = cms.untracked.PSet(
     limit = cms.untracked.int32(10000000)
 )
-'''

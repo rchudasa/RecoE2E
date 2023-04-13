@@ -86,13 +86,13 @@ process.GlobalTag.globaltag = cms.string('113X_upgrade2018_realistic_v5')
 process.es_prefer_GlobalTag = cms.ESPrefer('PoolDBESSource','GlobalTag')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(options.maxEvents)
-    #input = cms.untracked.int32(10)
+    #input = cms.untracked.int32(options.maxEvents)
+    input = cms.untracked.int32(1000)
     )
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-      options.inputFiles
-      #"file:myOutputFile.root"#SinglePhotonPt50_noPU_AODSIM.root
+      #options.inputFiles
+      "file:/eos/cms/store/group/phys_heavyions/rchudasa/e2e/inference/TTToHadronic_TuneCP5CR1_13TeV-powheg-pythia8_AODSIM_1K.root"
       )
     , skipEvents = cms.untracked.uint32(0)#options.skipEvents
     )
@@ -101,10 +101,22 @@ print (" >> Loaded",len(options.inputFiles),"input files from list.")
 process.load("RecoE2E.FrameProducers.DetFrameProducer_cfi")
 process.load("RecoE2E.FrameProducers.JetFrameProducer_cfi")
 process.load("RecoE2E.TopTagger.TopTagger_cfi")
-#process.EGTagger.EGModelName = options.EGModelName
 process.JetFrames.jetCollection = cms.string("ak8")
 process.JetFrames.minJetPt = cms.double(35.)
 process.JetFrames.maxJetEta = cms.double(2.4)
+
+process.JetFrames.doHBHEenergy = True
+process.JetFrames.doTracksAtECALstitchedPt = True
+process.JetFrames.doBPIX1 = True
+process.JetFrames.doBPIX2 = True
+process.JetFrames.doTEC = True
+process.DetFrames.doHBHEenergy = True
+process.DetFrames.doTracksAtECALstitchedPt = True
+process.DetFrames.doBPIX1 = True 
+process.DetFrames.doBPIX2 = True
+process.DetFrames.doTEC = True
+process.DetFrames.setChannelOrder = cms.string("0,1,2,3,4,5,6,7")
+'''
 process.JetFrames.doHBHEenergy = options.doHBHEenergy
 process.JetFrames.doECALstitched = options.doECALstitched
 process.JetFrames.doTracksAtECALstitchedPt = options.doTracksAtECALstitchedPt
@@ -124,7 +136,7 @@ process.DetFrames.doBPIX2 = options.doBPIX2
 process.DetFrames.doBPIX3 = options.doBPIX3
 process.DetFrames.doBPIX4 = options.doBPIX4
 process.DetFrames.setChannelOrder = options.setChannelOrder
-
+'''
 process.TopTagger.TopModelName = cms.string("tfModels/"+options.TopModelName)
 
 process.out = cms.OutputModule("PoolOutputModule",

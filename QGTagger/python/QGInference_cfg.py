@@ -82,17 +82,18 @@ process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_38T_cff")
 process.load("Configuration.StandardSequences.Reconstruction_cff")
-process.GlobalTag.globaltag = cms.string('113X_upgrade2018_realistic_v5')
+#process.GlobalTag.globaltag = cms.string('113X_upgrade2018_realistic_v5')
+process.GlobalTag.globaltag = cms.string('120X_upgrade2018_realistic_v1')
 process.es_prefer_GlobalTag = cms.ESPrefer('PoolDBESSource','GlobalTag')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(options.maxEvents)
-    #input = cms.untracked.int32(10)
+    #input = cms.untracked.int32(options.maxEvents)
+    input = cms.untracked.int32(1000)
     )
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-      options.inputFiles
-      #"file:myOutputFile.root"#SinglePhotonPt50_noPU_AODSIM.root
+      #options.inputFiles
+      "file:/eos/cms/store/group/phys_heavyions/rchudasa/e2e/inference/QCD_Pt_300to470_TuneCP5_Pythia8_AODSIM_1K.root"#SinglePhotonPt50_noPU_AODSIM.root
       )
     , skipEvents = cms.untracked.uint32(0)#options.skipEvents
     )
@@ -105,6 +106,13 @@ process.load("RecoE2E.QGTagger.QGTagger_cfi")
 process.JetFrames.jetCollection = cms.string("ak4")
 process.JetFrames.minJetPt = cms.double(35.)
 process.JetFrames.maxJetEta = cms.double(2.4)
+
+process.JetFrames.doHBHEenergy = True
+process.JetFrames.doTracksAtECALstitchedPt = True
+process.DetFrames.doHBHEenergy = True
+process.DetFrames.doTracksAtECALstitchedPt = True
+
+'''
 process.JetFrames.doHBHEenergy = options.doHBHEenergy
 process.JetFrames.doECALstitched = options.doECALstitched
 process.JetFrames.doTracksAtECALstitchedPt = options.doTracksAtECALstitchedPt
@@ -122,7 +130,9 @@ process.DetFrames.doBPIX1 = options.doBPIX1
 process.DetFrames.doBPIX2 = options.doBPIX2
 process.DetFrames.doBPIX3 = options.doBPIX3
 process.DetFrames.doBPIX4 = options.doBPIX4
-process.DetFrames.setChannelOrder = options.setChannelOrder
+'''
+#process.DetFrames.setChannelOrder = options.setChannelOrder
+process.DetFrames.setChannelOrder = cms.string("0,1,2,3,4")
 
 process.QGTagger.QGModelName = cms.string("tfModels/"+options.QGModelName)
 
