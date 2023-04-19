@@ -137,10 +137,10 @@ process.DetFrames.setChannelOrder = cms.string("0,1,2,3,4")
 process.QGTagger.QGModelName = cms.string("tfModels/"+options.QGModelName)
 
 process.out = cms.OutputModule("PoolOutputModule",
-    fileName = cms.untracked.string('QGPt+QGFrames.root') 
+    fileName = cms.untracked.string('file:/afs/cern.ch/work/r/rchudasa/private/inference/CMSSW_12_0_2/src/QGPt+QGFrames.root') 
     )
 process.TFileService = cms.Service("TFileService",
-    fileName = cms.string("ntuple.root")#options.outputFile
+    fileName = cms.string("file:/afs/cern.ch/work/r/rchudasa/private/inference/CMSSW_12_0_2/src/ntuple.root")#options.outputFile
     )
 
 process.p = cms.Path(process.DetFrames + process.JetFrames+process.QGTagger)
@@ -153,3 +153,12 @@ process.ep=cms.EndPath(process.out)
 #process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",
 #    ignoreTotal = cms.untracked.int32(1)
 #)
+
+from HLTrigger.Timer.FastTimerService_cfi import FastTimerService as _FastTimerService
+process.FastTimerService = _FastTimerService.clone(
+  enableDQM = False,
+  printRunSummary = False,
+  printJobSummary = True,
+  writeJSONSummary = True,
+  jsonFileName = 'resources.json'
+)

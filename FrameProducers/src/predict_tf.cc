@@ -34,8 +34,8 @@ e2e::Frame2D e2e::predict_tf(e2e::Frame4D& vinputFrame, string model_filename, s
  Ort::Env env(OrtLoggingLevel::ORT_LOGGING_LEVEL_WARNING,
                  instanceName.c_str());
  //std::string modelFilepath ="RecoE2E/"+model_filename;
- //std::string modelFilepath ="/afs/cern.ch/work/r/rchudasa/private/inference/CMSSW_12_0_2/src/RecoE2E/tfModels/sample.onnx";
- std::string modelFilepath ="/afs/cern.ch/work/r/rchudasa/private/inference/CMSSW_12_0_2/src/RecoE2E/tfModels/tau.onnx";
+ std::string modelFilepath ="/afs/cern.ch/work/r/rchudasa/private/inference/CMSSW_12_0_2/src/RecoE2E/tfModels/sample.onnx";
+ //std::string modelFilepath ="/afs/cern.ch/work/r/rchudasa/private/inference/CMSSW_12_0_2/src/RecoE2E/tfModels/tau.onnx";
  //std::cout<< "======Model path is:" << modelFilepath << std::endl;
  // uncomment following 2 line to use GPU for inference 
  //OrtCUDAProviderOptions cuda_options{};

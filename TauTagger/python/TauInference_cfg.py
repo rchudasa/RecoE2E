@@ -106,17 +106,18 @@ process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_38T_cff")
 process.load("Configuration.StandardSequences.Reconstruction_cff")
-process.GlobalTag.globaltag = cms.string('113X_upgrade2018_realistic_v5')
+#process.GlobalTag.globaltag = cms.string('113X_upgrade2018_realistic_v5')
+process.GlobalTag.globaltag = cms.string('120X_upgrade2018_realistic_v1')
 process.es_prefer_GlobalTag = cms.ESPrefer('PoolDBESSource','GlobalTag')
 
 process.maxEvents = cms.untracked.PSet(
     #input = cms.untracked.int32(options.maxEvents)
-    input = cms.untracked.int32(10)
+    input = cms.untracked.int32(1000)
     )
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
       #options.inputFiles
-      "file:/eos/cms/store/group/phys_heavyions/rchudasa/e2e/GluGluHToTauTau_Hadronic_M125_13TeV_powheg_pythia8/GluGluHToTauTau_AODSIM/230101_172641/0000/SIM_GluGluHToTauTau_Pythia8_1.root"
+      "file:/eos/cms/store/group/phys_heavyions/rchudasa/e2e/inference/GluGluHToTauTau_Pythia8_AODSIM_1K.root"
       )
     , skipEvents = cms.untracked.uint32(0)#options.skipEvents
     )
@@ -173,10 +174,10 @@ process.DetFrames.setChannelOrder = options.setChannelOrder
 process.TauTagger.TauModelName = cms.string("tfModels/"+options.TauModelName)
 
 process.out = cms.OutputModule("PoolOutputModule",
-    fileName = cms.untracked.string('TauPt+TauFrames.root') 
+    fileName = cms.untracked.string('/afs/cern.ch/work/r/rchudasa/private/inference/CMSSW_12_0_2/src/TauPt+TauFrames.root') 
     )
 process.TFileService = cms.Service("TFileService",
-    fileName = cms.string("ntuple.root")#options.outputFile
+    fileName = cms.string("/afs/cern.ch/work/r/rchudasa/private/inference/CMSSW_12_0_2/src/ntuple.root")#options.outputFile
     )
 
 process.p = cms.Path(process.DetFrames + process.JetFrames+process.TauTagger)
@@ -189,3 +190,12 @@ process.ep=cms.EndPath(process.out)
 #process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",
 #    ignoreTotal = cms.untracked.int32(1)
 #)
+
+from HLTrigger.Timer.FastTimerService_cfi import FastTimerService as _FastTimerService
+process.FastTimerService = _FastTimerService.clone(
+  enableDQM = False,
+  printRunSummary = False,
+  printJobSummary = True,
+  writeJSONSummary = True,
+  jsonFileName = 'resources.json'
+)

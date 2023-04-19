@@ -48,6 +48,7 @@ process.maxEvents = cms.untracked.PSet(
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
       #options.inputFiles
+     #"file:file:/afs/cern.ch/work/r/rchudasa/private/inference/CMSSW_12_0_2/src/SIM_DoubleGammaPt50_Pythia8_1000Ev.root"#SinglePhotonPt50_noPU_AODSIM.root
      "file:/eos/cms/store/group/phys_heavyions/rchudasa/e2e/inference/SIM_DoubleGammaPt50_Pythia8_1000Ev.root"#SinglePhotonPt50_noPU_AODSIM.root
       #"file:/eos/cms/store/group/phys_heavyions/rchudasa/e2e/DoubleGammaPt50_Pythia8/DoubleGammaPt50_AODSIM/230113_072153/0000/output.root"#SinglePhotonPt50_noPU_AODSIM.root
       )
@@ -77,10 +78,10 @@ process.DetFrames.setChannelOrder = "1"
 #process.EGTagger.EGmodelName = cms.string("tfModels/"+options.EGModelName)
 process.EGTagger.EGModelName = cms.string('tfModels/sample.onnx')
 process.out = cms.OutputModule("PoolOutputModule",
-    fileName = cms.untracked.string('SinglePhotonPt50_noPU_AODSIM+EGFrames.root') 
+    fileName = cms.untracked.string('file:/afs/cern.ch/work/r/rchudasa/private/inference/CMSSW_12_0_2/src/SinglePhotonPt50_noPU_AODSIM+EGFrames.root') 
     )
 process.TFileService = cms.Service("TFileService",
-    fileName = cms.string("ntuple.root")#options.outputFile
+    fileName = cms.string("file:/afs/cern.ch/work/r/rchudasa/private/inference/CMSSW_12_0_2/src/ntuple.root")#options.outputFile
     )
 
 process.p = cms.Path(process.DetFrames + process.EGFrames+process.EGTagger)
@@ -104,7 +105,7 @@ process.FastTimerService = _FastTimerService.clone(
   writeJSONSummary = True,
   jsonFileName = 'resources.json'
 )
-
+'''
 from HLTrigger.Timer.ThroughputService_cfi import ThroughputService as _ThroughputService
 process.ThroughputService = _ThroughputService.clone(
   #enableDQM = False,
@@ -118,3 +119,4 @@ process.ThroughputService = _ThroughputService.clone(
 process.MessageLogger.cerr.ThroughputService = cms.untracked.PSet(
     limit = cms.untracked.int32(10000000)
 )
+'''

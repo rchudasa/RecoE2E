@@ -82,7 +82,8 @@ process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_38T_cff")
 process.load("Configuration.StandardSequences.Reconstruction_cff")
-process.GlobalTag.globaltag = cms.string('113X_upgrade2018_realistic_v5')
+#process.GlobalTag.globaltag = cms.string('113X_upgrade2018_realistic_v5')
+process.GlobalTag.globaltag = cms.string('120X_upgrade2018_realistic_v1')
 process.es_prefer_GlobalTag = cms.ESPrefer('PoolDBESSource','GlobalTag')
 
 process.maxEvents = cms.untracked.PSet(
@@ -140,10 +141,10 @@ process.DetFrames.setChannelOrder = options.setChannelOrder
 process.TopTagger.TopModelName = cms.string("tfModels/"+options.TopModelName)
 
 process.out = cms.OutputModule("PoolOutputModule",
-    fileName = cms.untracked.string('TopPt+TopFrames.root') 
+    fileName = cms.untracked.string('file:/afs/cern.ch/work/r/rchudasa/private/inference/CMSSW_12_0_2/src/TopPt+TopFrames.root') 
     )
 process.TFileService = cms.Service("TFileService",
-    fileName = cms.string("ntuple.root")#options.outputFile
+    fileName = cms.string("file:/afs/cern.ch/work/r/rchudasa/private/inference/CMSSW_12_0_2/src/ntuple.root")#options.outputFile
     )
 
 process.p = cms.Path(process.DetFrames + process.JetFrames+process.TopTagger)
@@ -156,3 +157,12 @@ process.ep=cms.EndPath(process.out)
 #process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",
 #    ignoreTotal = cms.untracked.int32(1)
 #)
+
+from HLTrigger.Timer.FastTimerService_cfi import FastTimerService as _FastTimerService
+process.FastTimerService = _FastTimerService.clone(
+  enableDQM = False,
+  printRunSummary = False,
+  printJobSummary = True,
+  writeJSONSummary = True,
+  jsonFileName = 'resources.json'
+)
